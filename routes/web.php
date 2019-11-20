@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\Finder\Finder;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
