@@ -12,20 +12,26 @@ class FinderAPITest extends TestCase
     /** @test */
     function it_finds_json_files_in_a_given_folder()
     {
-    	$files = Finder::create()
-    					->files()
-    					->in(base_path() . '/seeded_data');
+        mkdir(base_path() . '/seeded_data/temp');
 
-    	$jsonFilesCount = collect($files)
-    						->filter(function ($value, $key) {
-    							return \Str::is('*.json', $value);
-    						})->count();
+        $jsonFile = fopen(base_path() . '/seeded_data/temp/jsonFile.json', 'w');
+        fclose($jsonFile);
+        
+        $nonJsonFile = fopen(base_path() . '/seeded_data/temp/nonJsonFile.txt', 'w');
+        fclose($nonJsonFile);
 
-    	$filteredFiles = Finder::create()
-						    	->files()
-						    	->name('*.json')
-						    	->in(base_path() . '/seeded_data');
+        $jsonFiles = Finder::create()
+                        ->files()
+                        ->name('*.json')
+                        ->in(base_path() . '/seeded_data/temp');
 
-	    $this->assertEquals(collect($filteredFiles)->count(), $jsonFilesCount);
+        $jsonFilesCount = collect($jsonFiles)->count();
+
+        $this->assertEquals(1, $jsonFilesCount);
+
+        unlink(base_path() . '/seeded_data/temp/jsonFile.json');
+        unlink(base_path() . '/seeded_data/temp/nonJsonFile.txt');
+
+        rmdir(base_path() . '/seeded_data/temp');
     }
 }

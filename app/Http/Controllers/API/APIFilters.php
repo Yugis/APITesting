@@ -19,6 +19,7 @@ trait APIFilters
 
     	foreach ($files as $fileName => $file) 
     	{
+    		/** Filter by a provider */
 	    	if (request()->has('provider')) {
 	    		if ($this->checkIfProviderExists($fileName)) {
 	    			$jsonContents = json_decode(file_get_contents($file));
@@ -45,7 +46,7 @@ trait APIFilters
 	    		$users = $this->filterByMaximumBalance($users);
 	    	}
 
-	    	/** Filter by minimum currency*/
+	    	/** Filter by currency*/
 	    	if (request()->has('currency')) {
 	    		$users = $this->filterByCurrency($users);
 	    	}
